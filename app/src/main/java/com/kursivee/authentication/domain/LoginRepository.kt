@@ -14,9 +14,13 @@ class LoginRepository {
         loginCache.authenticationCache?.also {
             Log.d(LoginRepository::class.java.name, "AUTHN FROM CACHE: $it")
         } ?: run {
-            loginService.authenticate(username).also {
-                Log.d(LoginRepository::class.java.name, "AUTHN TO CACHE: $it")
-                loginCache.authenticationCache = it
+            loginService.authenticate(username).also { response ->
+                response.response?.let {
+                    Log.d(LoginRepository::class.java.name, "AUTHN TO CACHE: $response")
+                    loginCache.authenticationCache = response
+                } ?: run {
+                    Log.d(LoginRepository::class.java.name, "FAILED RESPONSE NO CACHE")
+                }
             }
         }
 
@@ -24,9 +28,13 @@ class LoginRepository {
         loginCache.authorizationCache?.also {
             Log.d(LoginRepository::class.java.name, "AUTHZ FROM CACHE: $it")
         } ?: run {
-            loginService.authorize(username).also {
-                Log.d(LoginRepository::class.java.name, "AUTHZ TO CACHE: $it")
-                loginCache.authorizationCache = it
+            loginService.authorize(username).also { response ->
+                response.response?.let {
+                    Log.d(LoginRepository::class.java.name, "AUTHZ TO CACHE: $response")
+                    loginCache.authorizationCache = response
+                } ?: run {
+                    Log.d(LoginRepository::class.java.name, "FAILED RESPONSE NO CACHE")
+                }
             }
         }
 }
