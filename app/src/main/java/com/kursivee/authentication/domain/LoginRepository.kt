@@ -2,6 +2,7 @@ package com.kursivee.authentication.domain
 
 import android.util.Log
 import com.kursivee.authentication.data.*
+import com.kursivee.authentication.data.db.entity.User
 import com.kursivee.authentication.data.response.AuthenticationResponse
 import com.kursivee.authentication.data.response.AuthorizeResponse
 import com.kursivee.authentication.data.response.NetworkResponse

@@ -7,6 +7,6 @@ import org.koin.dsl.module
 object DomainModule {
     val modules = module {
         single { LoginRepository(get(), get()) }
-        single { LoginUseCase(get()) }
+        single { LoginUseCase(get(), get()) }
     }
 }
