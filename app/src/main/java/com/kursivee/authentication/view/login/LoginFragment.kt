@@ -37,6 +37,9 @@ class LoginFragment : Fragment() {
             btn_success.setOnClickListener {
                 login(Usernames.SUCCESS.toString())
             }
+            btn_clear_cache.setOnClickListener {
+                vm.clear()
+            }
         }
     }
 

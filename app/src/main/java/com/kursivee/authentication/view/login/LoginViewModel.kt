@@ -10,7 +10,7 @@ import com.kursivee.authentication.data.response.NetworkResponse
 import com.kursivee.authentication.domain.LoginUseCase
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
+class LoginViewModel(private val loginUseCase: LoginUseCase, private val loginCache: LoginCache) : ViewModel() {
 
     fun login(username: String): LiveData<NetworkResponse<ErrorResponse>> {
         val liveData = MutableLiveData<NetworkResponse<ErrorResponse>>()
@@ -20,5 +20,9 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
             }
         }
         return liveData
+    }
+
+    fun clear() {
+        loginCache.clear()
     }
 }

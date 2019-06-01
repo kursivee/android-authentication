@@ -7,4 +7,9 @@ import com.kursivee.authentication.data.response.NetworkResponse
 class LoginCache {
     var authenticationCache: NetworkResponse<AuthenticationResponse>? = null
     var authorizationCache: NetworkResponse<AuthorizeResponse>? = null
+
+    fun clear() {
+        authenticationCache = null
+        authorizationCache = null
+    }
 }
