@@ -1,8 +1,8 @@
-package com.kursivee.authentication
+package com.kursivee.authentication.view.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kursivee.authentication.view.login.LoginFragment
+import com.kursivee.authentication.R
 
 class LoginActivity : AppCompatActivity() {
 
