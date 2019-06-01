@@ -10,17 +10,19 @@ import kotlinx.coroutines.delay
 class LoginService {
     suspend fun authenticate(username: String): NetworkResponse<AuthenticationResponse> {
         delay(100)
-        if(Usernames.FAIL_AUTHN == Usernames.valueOf(username)) {
-            return NetworkResponse(null, ErrorResponse("FAILED AUTHENTICATE"))
+        return if(Usernames.FAIL_AUTHN == Usernames.valueOf(username)) {
+            NetworkResponse(null, ErrorResponse("FAILED AUTHENTICATE"))
+        } else {
+            NetworkResponse(AuthenticationResponse())
         }
-        return NetworkResponse(AuthenticationResponse())
     }
 
     suspend fun authorize(username: String): NetworkResponse<AuthorizeResponse> {
         delay(100)
-        if(Usernames.FAIL_AUTHZ == Usernames.valueOf(username)) {
-            return NetworkResponse(null, ErrorResponse("FAILED AUTHORIZE"))
+        return if(Usernames.FAIL_AUTHZ == Usernames.valueOf(username)) {
+            NetworkResponse(null, ErrorResponse("FAILED AUTHORIZE"))
+        } else {
+            NetworkResponse(AuthorizeResponse())
         }
-        return NetworkResponse(AuthorizeResponse())
     }
 }
