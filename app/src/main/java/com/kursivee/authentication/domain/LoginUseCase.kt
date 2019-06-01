@@ -13,7 +13,7 @@ class LoginUseCase {
         authorize(username)?.let {
             return NetworkResponse(it)
         }
-        return NetworkResponse.error(null)
+        return NetworkResponse(null)
     }
 
     private suspend fun authenticate(username: String): ErrorResponse? =
