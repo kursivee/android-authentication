@@ -1,6 +1,8 @@
 package com.kursivee.authentication
 
 import android.app.Application
+import androidx.room.Room
+import com.kursivee.authentication.data.db.AppDatabase
 import com.kursivee.authentication.data.di.DataModule
 import com.kursivee.authentication.domain.di.DomainModule
 import com.kursivee.authentication.view.login.di.LoginViewModule
