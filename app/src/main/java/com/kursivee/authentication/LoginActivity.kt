@@ -2,7 +2,7 @@ package com.kursivee.authentication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kursivee.authentication.ui.login.LoginFragment
+import com.kursivee.authentication.view.login.LoginFragment
 
 class LoginActivity : AppCompatActivity() {
 
