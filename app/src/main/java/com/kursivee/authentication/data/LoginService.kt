@@ -19,10 +19,10 @@ class LoginService {
 
     suspend fun authorize(username: String): NetworkResponse<AuthorizeResponse> {
         delay(100)
-        return if(Usernames.FAIL_AUTHZ == Usernames.valueOf(username)) {
-            NetworkResponse(null, ErrorResponse("FAILED AUTHORIZE"))
-        } else {
+        return if(Usernames.SUCCESS == Usernames.valueOf(username)) {
             NetworkResponse(AuthorizeResponse())
+        } else {
+            NetworkResponse(null, ErrorResponse("FAILED AUTHORIZE"))
         }
     }
 }
