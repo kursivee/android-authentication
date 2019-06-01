@@ -1,6 +1,5 @@
 package com.kursivee.authentication.view.login
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.kursivee.authentication.R
 import com.kursivee.authentication.util.Usernames
 import kotlinx.android.synthetic.main.login_fragment.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
 
@@ -17,9 +17,7 @@ class LoginFragment : Fragment() {
         fun newInstance() = LoginFragment()
     }
 
-    private val viewModel: LoginViewModel by lazy {
-        ViewModelProviders.of(this).get(LoginViewModel::class.java)
-    }
+    private val vm: LoginViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +41,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(username: String) {
-        viewModel.login(username).observe(this, Observer {
+        vm.login(username).observe(this, Observer {
             it.response?.let { response ->
                 tv_message.text = response.error
             } ?: run {
