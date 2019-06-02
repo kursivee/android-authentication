@@ -2,15 +2,14 @@ package com.kursivee.authentication.view.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.kursivee.authentication.data.LoginCache
 import com.kursivee.authentication.data.response.ErrorResponse
 import com.kursivee.authentication.data.response.NetworkResponse
 import com.kursivee.authentication.domain.LoginUseCase
+import com.kursivee.authentication.domain.UserDaoUseCase
 import com.kursivee.util.CoroutinesTestRule
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
+import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -63,4 +62,21 @@ class LoginViewModelTest {
             verify { observer.onChanged(NetworkResponse(ErrorResponse())) }
         }
 
+    @Test
+    fun `when clearing cache it should clear the login cache`() =
+        runBlockingTest {
+            val loginCache = mockk<LoginCache>(relaxUnitFun = true)
+            val vm = LoginViewModel(mockk(), loginCache, mockk(relaxUnitFun = true))
+            vm.clear()
+            verify(exactly = 1) { loginCache.clear() }
+        }
+
+    @Test
+    fun `when clearing cache it should clear the user cache`() =
+        runBlockingTest {
+            val userDaoUseCase = mockk<UserDaoUseCase>(relaxUnitFun = true)
+            val vm = LoginViewModel(mockk(), mockk(relaxUnitFun = true), userDaoUseCase)
+            vm.clear()
+            verify(exactly = 1) { userDaoUseCase.clear() }
+        }
 }
