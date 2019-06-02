@@ -5,7 +5,7 @@ import com.kursivee.authentication.data.response.AuthenticationResponse
 import com.kursivee.authentication.data.response.AuthorizeResponse
 import com.kursivee.authentication.data.response.NetworkResponse
 
-class LoginCacheUseCase(private val memoryCache: MemoryCache) {
+class LoginCache(private val memoryCache: MemoryCache) {
     fun clear() {
         memoryCache.remove(AuthenticationResponse::class.java)
         memoryCache.remove(AuthorizeResponse::class.java)

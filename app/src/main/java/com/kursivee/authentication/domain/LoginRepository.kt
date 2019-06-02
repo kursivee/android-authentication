@@ -6,7 +6,7 @@ import com.kursivee.authentication.data.response.AuthenticationResponse
 import com.kursivee.authentication.data.response.AuthorizeResponse
 import com.kursivee.authentication.data.response.NetworkResponse
 
-class LoginRepository(private val loginService: LoginApi, private val loginCache: LoginCacheUseCase) {
+class LoginRepository(private val loginService: LoginApi, private val loginCache: LoginCache) {
     suspend fun authenticate(username: String): NetworkResponse<AuthenticationResponse> =
         loginCache.getAuthnResponse() ?: run {
             loginService.authenticate(username).also { response ->

@@ -1,6 +1,6 @@
 package com.kursivee.authentication.domain.di
 
-import com.kursivee.authentication.domain.LoginCacheUseCase
+import com.kursivee.authentication.domain.LoginCache
 import com.kursivee.authentication.domain.LoginRepository
 import com.kursivee.authentication.domain.LoginUseCase
 import com.kursivee.authentication.domain.UserDaoUseCase
@@ -10,7 +10,7 @@ object DomainModule {
     val modules = module {
         single { LoginRepository(get(), get()) }
         single { LoginUseCase(get(), get()) }
-        single { LoginCacheUseCase(get()) }
+        single { LoginCache(get()) }
         single { UserDaoUseCase(get()) }
     }
 }

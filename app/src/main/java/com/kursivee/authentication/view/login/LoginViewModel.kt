@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kursivee.authentication.domain.LoginCacheUseCase
+import com.kursivee.authentication.domain.LoginCache
 import com.kursivee.authentication.domain.UserDaoUseCase
 import com.kursivee.authentication.data.response.ErrorResponse
 import com.kursivee.authentication.data.response.NetworkResponse
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase,
-    private val loginCache: LoginCacheUseCase,
+    private val loginCache: LoginCache,
     private val userCache: UserDaoUseCase
 ) : ViewModel() {
 

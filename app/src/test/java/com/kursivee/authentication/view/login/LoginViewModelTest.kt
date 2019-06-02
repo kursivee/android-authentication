@@ -2,7 +2,7 @@ package com.kursivee.authentication.view.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.kursivee.authentication.domain.LoginCacheUseCase
+import com.kursivee.authentication.domain.LoginCache
 import com.kursivee.authentication.data.response.ErrorResponse
 import com.kursivee.authentication.data.response.NetworkResponse
 import com.kursivee.authentication.domain.LoginUseCase
@@ -62,7 +62,7 @@ class LoginViewModelTest {
     @Test
     fun `when clearing cache it should clear the login cache`() =
         runBlockingTest {
-            val loginCache = mockk<LoginCacheUseCase>(relaxUnitFun = true)
+            val loginCache = mockk<LoginCache>(relaxUnitFun = true)
             val vm = LoginViewModel(mockk(), loginCache, mockk(relaxUnitFun = true))
             vm.clear()
             verify(exactly = 1) { loginCache.clear() }
