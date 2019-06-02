@@ -42,8 +42,8 @@ class ProgressBarJobTest {
     @Test
     fun `when starting progress bar it should increment the progress bar`() =
         runBlockingTest {
-            val job = ProgressBarJob(progressBar)
-            job.start()
+            val job = ProgressBarJob()
+            job.start(progressBar)
             assertThat(progressBar.progress)
                 .isNotEqualTo(0)
             job.stop()
@@ -52,8 +52,8 @@ class ProgressBarJobTest {
     @Test
     fun `when stopping progress bar it should reset progress to 0`() =
         runBlockingTest {
-            val job = ProgressBarJob(progressBar)
-            job.start()
+            val job = ProgressBarJob()
+            job.start(progressBar)
             job.stop()
             assertThat(progressBar.progress)
                 .isEqualTo(0)

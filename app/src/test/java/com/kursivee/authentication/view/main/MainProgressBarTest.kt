@@ -8,7 +8,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.kursivee.authentication.R
 import com.kursivee.authentication.view.progressbar.ProgressBarJob
-import com.kursivee.authentication.view.progressbar.ProgressBarJobFactory
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -28,20 +27,14 @@ class MainProgressBarTest {
     private lateinit var clLoading: ConstraintLayout
     private lateinit var pbLoading: ProgressBar
     private lateinit var progressBar: MainProgressBarComponent
-
-    private val progressBarJobFactory = mockk<ProgressBarJobFactory>()
+    private var progressBarJob: ProgressBarJob = mockk(relaxUnitFun = true)
 
     @Before
     fun setup() {
         activity = Robolectric.buildActivity(MainActivity::class.java).create().get()
         clLoading = activity.findViewById(R.id.cl_loading)
         pbLoading = clLoading.findViewById(R.id.pb_loading)
-        every {
-            progressBarJobFactory.getProgressBarJob(any())
-        } answers {
-            mockk(relaxUnitFun = true)
-        }
-        progressBar = MainProgressBarComponent(clLoading, progressBarJobFactory)
+        progressBar = MainProgressBarComponent(clLoading, progressBarJob)
     }
 
     @Test
@@ -54,7 +47,7 @@ class MainProgressBarTest {
     @Test
     fun `when starting the progress bar it should start the progress`() {
         progressBar.show()
-        verify(exactly = 1) { progressBar.getProgressBarJob().start() }
+        verify(exactly = 1) { progressBarJob.start(any()) }
     }
 
     @Test
