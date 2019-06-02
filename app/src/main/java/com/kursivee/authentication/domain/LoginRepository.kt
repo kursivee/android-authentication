@@ -1,12 +1,11 @@
 package com.kursivee.authentication.domain
 
 import android.util.Log
-import com.kursivee.authentication.data.*
 import com.kursivee.authentication.data.response.AuthenticationResponse
 import com.kursivee.authentication.data.response.AuthorizeResponse
 import com.kursivee.authentication.data.response.NetworkResponse
 
-class LoginRepository(private val loginService: LoginApi, private val loginCache: LoginCache) {
+class LoginRepository(private val loginService: LoginClient, private val loginCache: LoginCache) {
     suspend fun authenticate(username: String): NetworkResponse<AuthenticationResponse> =
         loginCache.getAuthnResponse() ?: run {
             loginService.authenticate(username).also { response ->
