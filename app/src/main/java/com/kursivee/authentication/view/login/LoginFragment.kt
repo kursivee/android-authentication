@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.kursivee.authentication.R
 import com.kursivee.authentication.util.Usernames
+import com.kursivee.authentication.view.main.MainActivity
 import kotlinx.android.synthetic.main.login_fragment.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -17,7 +18,9 @@ class LoginFragment : Fragment() {
         fun newInstance() = LoginFragment()
     }
 
-    private val loginActivity by lazy { requireActivity() as LoginActivity }
+    private val progressBarComponent by lazy {
+        (requireActivity() as MainActivity).progressBarComponent
+    }
 
     private val vm: LoginViewModel by viewModel()
 
@@ -46,14 +49,14 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(username: String) {
-        loginActivity.showProgressBar()
+        progressBarComponent.show()
         vm.login(username).observe(this, Observer {
             it.response?.let { response ->
                 tv_message.text = response.error
             } ?: run {
                 tv_message.text = "SUCCESS"
             }
-            loginActivity.dismissProgressBar()
+            progressBarComponent.dismiss()
         })
     }
 }

@@ -1,4 +1,4 @@
-package com.kursivee.authentication.view.login
+package com.kursivee.authentication.view.progressbar
 
 import android.widget.ProgressBar
 import kotlinx.coroutines.*

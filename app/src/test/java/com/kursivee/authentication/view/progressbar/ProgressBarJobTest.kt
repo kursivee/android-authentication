@@ -1,14 +1,14 @@
-package com.kursivee.authentication.view.login
+package com.kursivee.authentication.view.progressbar
 
 import android.widget.ProgressBar
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
+import com.kursivee.authentication.view.progressbar.ProgressBarJob
 import com.kursivee.util.CoroutinesTestRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
