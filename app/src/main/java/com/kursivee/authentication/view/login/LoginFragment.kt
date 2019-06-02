@@ -33,30 +33,14 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState).also {
-            btn_fail_authn.setOnClickListener {
-                login(Usernames.FAIL_AUTHN.toString())
-            }
-            btn_fail_authz.setOnClickListener {
-                login(Usernames.FAIL_AUTHZ.toString())
-            }
-            btn_success.setOnClickListener {
-                login(Usernames.SUCCESS.toString())
-            }
-            btn_clear_cache.setOnClickListener {
-                vm.clear()
-            }
+            SignInComponent(view.findViewById(R.id.cl_login), this, vm)
+            vm.loading.observe(this, Observer {
+                if(it) {
+                    progressBarComponent.show()
+                } else {
+                    progressBarComponent.dismiss()
+                }
+            })
         }
-    }
-
-    private fun login(username: String) {
-        progressBarComponent.show()
-        vm.login(username).observe(this, Observer {
-            it.response?.let { response ->
-                tv_message.text = response.error
-            } ?: run {
-                tv_message.text = "SUCCESS"
-            }
-            progressBarComponent.dismiss()
-        })
     }
 }
