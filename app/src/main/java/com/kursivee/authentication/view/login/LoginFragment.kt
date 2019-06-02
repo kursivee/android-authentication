@@ -1,10 +1,10 @@
 package com.kursivee.authentication.view.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.kursivee.authentication.R
 import com.kursivee.authentication.util.Usernames
@@ -16,6 +16,8 @@ class LoginFragment : Fragment() {
     companion object {
         fun newInstance() = LoginFragment()
     }
+
+    private val loginActivity by lazy { requireActivity() as LoginActivity }
 
     private val vm: LoginViewModel by viewModel()
 
@@ -44,12 +46,14 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(username: String) {
+        loginActivity.showProgressBar()
         vm.login(username).observe(this, Observer {
             it.response?.let { response ->
                 tv_message.text = response.error
             } ?: run {
                 tv_message.text = "SUCCESS"
             }
+            loginActivity.dismissProgressBar()
         })
     }
 }

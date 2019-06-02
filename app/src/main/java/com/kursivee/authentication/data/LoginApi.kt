@@ -9,7 +9,7 @@ import kotlinx.coroutines.delay
 
 class LoginApi {
     suspend fun authenticate(username: String): NetworkResponse<AuthenticationResponse> {
-        delay(100)
+        delay(1000)
         return if(Usernames.FAIL_AUTHN == Usernames.valueOf(username)) {
             NetworkResponse(null, ErrorResponse("FAILED AUTHENTICATE"))
         } else {
@@ -18,7 +18,7 @@ class LoginApi {
     }
 
     suspend fun authorize(username: String): NetworkResponse<AuthorizeResponse> {
-        delay(100)
+        delay(1000)
         return if(Usernames.SUCCESS == Usernames.valueOf(username)) {
             NetworkResponse(AuthorizeResponse())
         } else {
