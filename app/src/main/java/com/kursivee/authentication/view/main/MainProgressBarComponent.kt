@@ -13,7 +13,7 @@ import com.kursivee.authentication.view.progressbar.ProgressBarJob
 class MainProgressBarComponent(private val container: ViewGroup, private val progressBarJob: ProgressBarJob) {
 
     companion object {
-        const val  PB_CONTAINER_ID = "PB_CONTAINER_ID"
+        const val PB_CONTAINER_ID = R.id.cl_loading.toString()
     }
 
     private val pbLoading by lazy {
