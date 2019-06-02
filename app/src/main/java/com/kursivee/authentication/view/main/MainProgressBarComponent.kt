@@ -4,13 +4,15 @@ import android.app.Activity
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ProgressBar
+import androidx.annotation.VisibleForTesting
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.kursivee.authentication.R
 import com.kursivee.authentication.view.progressbar.ProgressBarJob
+import com.kursivee.authentication.view.progressbar.ProgressBarJobFactory
 
-class MainProgressBarComponent(private val view: ViewGroup) {
+class MainProgressBarComponent(private val view: ViewGroup, private val progressBarJobFactory: ProgressBarJobFactory = ProgressBarJobFactory()) {
 
     private lateinit var progressBarJob: ProgressBarJob
 
@@ -27,7 +29,8 @@ class MainProgressBarComponent(private val view: ViewGroup) {
             it.isVisible = true
             it.bringToFront()
         }
-        progressBarJob = ProgressBarJob(pbLoading).apply { start() }
+        pbLoading.isVisible = true
+        progressBarJob = progressBarJobFactory.getProgressBarJob(pbLoading).apply { start() }
         (view.context as Activity).window?.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
@@ -37,8 +40,15 @@ class MainProgressBarComponent(private val view: ViewGroup) {
     fun dismiss() {
         progressBarJob.stop()
         clLoading.isGone = true
+        pbLoading.isGone = true
         (view.context as Activity).window?.clearFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
         )
+    }
+
+    // Placing VisibleForTesting annotation on progressBarJob field does not work
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun getProgressBarJob(): ProgressBarJob {
+        return progressBarJob
     }
 }
