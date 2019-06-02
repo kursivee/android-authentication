@@ -7,7 +7,7 @@ import com.kursivee.authentication.data.response.NetworkResponse
 import com.kursivee.authentication.util.Usernames
 import kotlinx.coroutines.delay
 
-class LoginService {
+class LoginApi {
     suspend fun authenticate(username: String): NetworkResponse<AuthenticationResponse> {
         delay(100)
         return if(Usernames.FAIL_AUTHN == Usernames.valueOf(username)) {
