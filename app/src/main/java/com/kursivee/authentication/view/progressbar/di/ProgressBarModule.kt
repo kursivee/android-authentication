@@ -5,6 +5,6 @@ import org.koin.dsl.module
 
 object ProgressBarModule {
     val modules = module {
-        single { ProgressBarJob() }
+        factory { ProgressBarJob() }
     }
 }
