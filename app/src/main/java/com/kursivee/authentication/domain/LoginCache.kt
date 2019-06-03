@@ -4,6 +4,7 @@ import com.kursivee.authentication.data.MemoryCache
 import com.kursivee.authentication.data.response.AuthenticationResponse
 import com.kursivee.authentication.data.response.AuthorizeResponse
 import com.kursivee.authentication.data.response.NetworkResponse
+import com.kursivee.authentication.ext.castOrNull
 
 class LoginCache(private val memoryCache: MemoryCache) {
     fun clear() {
@@ -14,7 +15,7 @@ class LoginCache(private val memoryCache: MemoryCache) {
     @Suppress("UNCHECKED_CAST")
     fun getAuthnResponse(): NetworkResponse<AuthenticationResponse>? =
         memoryCache.get(AuthenticationResponse::class.java)?.let {
-            NetworkResponse(it as? AuthenticationResponse)
+            NetworkResponse(it.castOrNull<AuthenticationResponse>())
         }
 
     fun putAuthnResponse(authenticationResponse: AuthenticationResponse) {
@@ -24,7 +25,7 @@ class LoginCache(private val memoryCache: MemoryCache) {
     @Suppress("UNCHECKED_CAST")
     fun getAuthzResponse(): NetworkResponse<AuthorizeResponse>? =
         memoryCache.get(AuthorizeResponse::class.java)?.let {
-            NetworkResponse(it as? AuthorizeResponse)
+            NetworkResponse(it.castOrNull<AuthorizeResponse>())
         }
 
     fun putAuthzResponse(authorizeResponse: AuthorizeResponse) {
