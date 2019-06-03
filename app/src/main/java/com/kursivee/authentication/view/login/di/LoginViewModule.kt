@@ -5,7 +5,7 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 object LoginViewModule {
-    val modules = module {
+    val module = module {
         viewModel { LoginViewModel(get(), get(), get()) }
     }
 }

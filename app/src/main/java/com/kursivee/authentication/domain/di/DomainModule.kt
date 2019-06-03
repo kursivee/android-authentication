@@ -7,7 +7,7 @@ import com.kursivee.authentication.domain.UserDaoUseCase
 import org.koin.dsl.module
 
 object DomainModule {
-    val modules = module {
+    val module = module {
         single { LoginRepository(get(), get()) }
         single { LoginUseCase(get(), get()) }
         single { LoginCache(get()) }

@@ -24,11 +24,11 @@ class App: Application() {
             startKoin {
                 androidContext(this@App)
                 modules(listOf(
-                    DataModule.modules,
-                    DomainModule.modules,
-                    LoginViewModule.modules,
-                    MainModule.modules,
-                    ProgressBarModule.modules
+                    DataModule.module,
+                    DomainModule.module,
+                    LoginViewModule.module,
+                    MainModule.module,
+                    ProgressBarModule.module
                 ))
             }
         }

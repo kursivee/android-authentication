@@ -7,7 +7,7 @@ import com.kursivee.authentication.data.db.AppDatabase
 import org.koin.dsl.module
 
 object DataModule {
-    val modules = module {
+    val module = module {
         single { Room.databaseBuilder(get(), AppDatabase::class.java, "users-db").build() }
         single { get<AppDatabase>().userDao() }
         single { LoginClient() }
