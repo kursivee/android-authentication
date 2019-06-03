@@ -13,17 +13,21 @@ class LoginCache(private val memoryCache: MemoryCache) {
 
     @Suppress("UNCHECKED_CAST")
     fun getAuthnResponse(): NetworkResponse<AuthenticationResponse>? =
-        memoryCache.get(AuthenticationResponse::class.java) as? NetworkResponse<AuthenticationResponse>
+        memoryCache.get(AuthenticationResponse::class.java)?.let {
+            NetworkResponse(it as? AuthenticationResponse)
+        }
 
-    fun putAuthnResponse(authenticationResponse: NetworkResponse<AuthenticationResponse>) {
+    fun putAuthnResponse(authenticationResponse: AuthenticationResponse) {
         memoryCache.put(AuthenticationResponse::class.java, authenticationResponse)
     }
 
     @Suppress("UNCHECKED_CAST")
     fun getAuthzResponse(): NetworkResponse<AuthorizeResponse>? =
-        memoryCache.get(AuthorizeResponse::class.java) as? NetworkResponse<AuthorizeResponse>
+        memoryCache.get(AuthorizeResponse::class.java)?.let {
+            NetworkResponse(it as? AuthorizeResponse)
+        }
 
-    fun putAuthzResponse(authorizeResponse: NetworkResponse<AuthorizeResponse>) {
+    fun putAuthzResponse(authorizeResponse: AuthorizeResponse) {
         memoryCache.put(AuthorizeResponse::class.java, authorizeResponse)
     }
 }

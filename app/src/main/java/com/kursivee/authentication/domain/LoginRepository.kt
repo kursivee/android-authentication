@@ -11,7 +11,7 @@ class LoginRepository(private val loginService: LoginClient, private val loginCa
             loginService.authenticate(username).also { response ->
                 response.response?.let {
                     Log.d(LoginRepository::class.java.name, "AUTHN TO CACHE: $response")
-                    loginCache.putAuthnResponse(response)
+                    loginCache.putAuthnResponse(it)
                 } ?: run {
                     Log.d(LoginRepository::class.java.name, "FAILED RESPONSE NO CACHE")
                 }
@@ -24,7 +24,7 @@ class LoginRepository(private val loginService: LoginClient, private val loginCa
             loginService.authorize(username).also { response ->
                 response.response?.let {
                     Log.d(LoginRepository::class.java.name, "AUTHZ TO CACHE: $response")
-                    loginCache.putAuthzResponse(response)
+                    loginCache.putAuthzResponse(it)
                 } ?: run {
                     Log.d(LoginRepository::class.java.name, "FAILED RESPONSE NO CACHE")
                 }
