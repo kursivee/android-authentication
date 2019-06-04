@@ -1,12 +1,9 @@
 package com.kursivee.authentication
 
 import android.app.Application
-import androidx.room.Room
-import com.kursivee.authentication.data.db.AppDatabase
 import com.kursivee.authentication.data.di.DataModule
 import com.kursivee.authentication.domain.di.DomainModule
 import com.kursivee.authentication.view.login.di.LoginViewModule
-import com.kursivee.authentication.view.main.di.MainModule
 import com.kursivee.authentication.view.progressbar.di.ProgressBarModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
@@ -27,7 +24,6 @@ class App: Application() {
                     DataModule.module,
                     DomainModule.module,
                     LoginViewModule.module,
-                    MainModule.module,
                     ProgressBarModule.module
                 ))
             }

@@ -6,7 +6,6 @@ import com.kursivee.authentication.R
 import com.kursivee.authentication.view.login.LoginFragment
 import kotlinx.android.synthetic.main.login_activity.*
 import org.koin.android.ext.android.get
-import org.koin.android.ext.android.getKoin
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +19,6 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, LoginFragment.newInstance())
                 .commitNow()
         }
-        getKoin().setProperty(MainProgressBarComponent.PB_CONTAINER_ID, cl_loading)
-        progressBarComponent = get()
+        progressBarComponent = MainProgressBarComponent(cl_loading, get())
     }
 }
