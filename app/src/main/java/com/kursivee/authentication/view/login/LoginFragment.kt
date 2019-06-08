@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.kursivee.authentication.view.authentication.AuthenticationDelegate
+import com.kursivee.authentication.view.util.AlertFactory
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
@@ -25,6 +26,8 @@ class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
     companion object {
         fun newInstance() = LoginFragment()
     }
+
+    val alertFactory: AlertFactory by inject()
 
     private val progressBarComponent by lazy {
         (requireActivity() as MainActivity).progressBarComponent
@@ -68,7 +71,7 @@ class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
                 progressBarComponent.show()
                 authDelegate.authenticate(it) { result ->
                     progressBarComponent.dismiss()
-                    Toast.makeText(context,"Hello ${result.user.displayName}",Toast.LENGTH_LONG).show()
+                    alertFactory.toast("Hello ${result.user.displayName}").show()
                 }
             }
         }
@@ -77,15 +80,15 @@ class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
     override fun onStart() {
         super.onStart()
         authDelegate.currentUser?.let {
-            Toast.makeText(context,"Hello ${it.displayName}",Toast.LENGTH_LONG).show()
+            alertFactory.toast("Hello ${it.displayName}").show()
         }
     }
 
     override fun onComplete(task: Task<AuthResult>) {
         if (task.isSuccessful) {
-            Toast.makeText(context, "Signed In to firebase", Toast.LENGTH_LONG).show()
+            alertFactory.toast("Signed In to firebase").show()
         } else {
-            Toast.makeText(context, "Firebase auth failed :(", Toast.LENGTH_LONG).show()
+            alertFactory.toast("Firebase auth failed :(").show()
         }
     }
 
@@ -97,7 +100,7 @@ class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
         progressBarComponent.show()
         authDelegate.signOut().addOnCompleteListener {
             progressBarComponent.dismiss()
-            Toast.makeText(context, "Signed out", Toast.LENGTH_LONG).show()
+            alertFactory.toast("Signed out").show()
         }
     }
 }

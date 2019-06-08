@@ -6,6 +6,7 @@ import com.kursivee.authentication.domain.di.DomainModule
 import com.kursivee.authentication.view.authentication.di.AuthenticationModule
 import com.kursivee.authentication.view.login.di.LoginViewModule
 import com.kursivee.authentication.view.progressbar.di.ProgressBarModule
+import com.kursivee.authentication.view.util.di.UtilModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
@@ -22,6 +23,7 @@ class App: Application() {
             startKoin {
                 androidContext(this@App)
                 modules(listOf(
+                    UtilModule.module,
                     AuthenticationModule.module,
                     DataModule.module,
                     DomainModule.module,
