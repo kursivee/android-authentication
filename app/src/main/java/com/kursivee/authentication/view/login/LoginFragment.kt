@@ -10,12 +10,14 @@ import com.kursivee.authentication.R
 import com.kursivee.authentication.view.main.MainActivity
 import org.koin.android.viewmodel.ext.android.viewModel
 import android.content.Intent
+import android.widget.Button
 import android.widget.Toast
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.kursivee.authentication.view.authentication.AuthenticationDelegate
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
 class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
@@ -30,7 +32,7 @@ class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
 
     private val vm: LoginViewModel by viewModel()
 
-    val authDelegate: AuthenticationDelegate by inject()
+    private lateinit var authDelegate: AuthenticationDelegate
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,8 +43,12 @@ class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState).also {
+            authDelegate = AuthenticationDelegate(get(), activity!!)
             view.findViewById<SignInButton>(R.id.btn_sign_in).setOnClickListener {
                 signIn()
+            }
+            view.findViewById<Button>(R.id.btn_sign_out).setOnClickListener {
+                signOut()
             }
             SignInComponent(view.findViewById(R.id.cl_login), this, vm)
             vm.loading.observe(this, Observer {
@@ -59,7 +65,11 @@ class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AuthenticationDelegate.RC_SIGN_IN) {
             data?.let {
-                authDelegate.authenticate(it)
+                progressBarComponent.show()
+                authDelegate.authenticate(it) { result ->
+                    progressBarComponent.dismiss()
+                    Toast.makeText(context,"Hello ${result.user.displayName}",Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -80,8 +90,14 @@ class LoginFragment : Fragment(), OnCompleteListener<AuthResult> {
     }
 
     private fun signIn() {
-        activity?.let {
-            startActivityForResult(authDelegate.authenticate(it), 1)
+        startActivityForResult(authDelegate.authenticate(), AuthenticationDelegate.RC_SIGN_IN)
+    }
+
+    private fun signOut() {
+        progressBarComponent.show()
+        authDelegate.signOut().addOnCompleteListener {
+            progressBarComponent.dismiss()
+            Toast.makeText(context, "Signed out", Toast.LENGTH_LONG).show()
         }
     }
 }

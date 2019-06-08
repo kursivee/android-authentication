@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -12,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kursivee.authentication.view.login.LoginFragment
 
-class AuthenticationDelegate(private val clientId: String) {
+class AuthenticationDelegate(private val clientId: String, private val activity: Activity) {
 
     companion object {
         const val RC_SIGN_IN = 1
@@ -22,25 +23,41 @@ class AuthenticationDelegate(private val clientId: String) {
         FirebaseAuth.getInstance()
     }
 
-    val currentUser = firebaseAuth.currentUser
+    private lateinit var googleSignInClient: GoogleSignInClient
 
-    fun authenticate(activity: Activity): Intent =
+    var currentUser = firebaseAuth.currentUser
+        private set
+
+    fun authenticate(): Intent =
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(clientId)
             .requestEmail()
             .build().run {
-                GoogleSignIn.getClient(activity, this).signInIntent
+                googleSignInClient = GoogleSignIn.getClient(activity, this)
+                googleSignInClient.signInIntent
             }
 
-    fun authenticate(intent: Intent): Task<AuthResult>? {
+    fun authenticate(intent: Intent, onComplete: (AuthResult) -> Unit = {}) {
         val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
         try {
             task.getResult(ApiException::class.java)?.let { account ->
-               return firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(account.idToken, null))
+               firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(account.idToken, null))
+                   .addOnCompleteListener {
+                       it.result?.let { result ->
+                           onComplete(result)
+                       }
+                   }
             }
         } catch (t: Throwable) {
             Log.e(LoginFragment::class.java.simpleName, "Google sign in failed", t)
         }
-        return null
+    }
+
+    fun signOut(): Task<Void> {
+        firebaseAuth.signOut()
+        if(!::googleSignInClient.isInitialized) {
+            authenticate()
+        }
+        return googleSignInClient.signOut()
     }
 }

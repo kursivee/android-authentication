@@ -8,9 +8,7 @@ import org.koin.dsl.module
 object AuthenticationModule {
     val module = module {
         single {
-            AuthenticationDelegate(
-                androidContext().resources.getString(R.string.default_web_client_id)
-            )
+            androidContext().resources.getString(R.string.default_web_client_id)
         }
     }
 }
