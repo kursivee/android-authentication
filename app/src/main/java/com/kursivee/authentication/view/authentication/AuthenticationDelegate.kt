@@ -1,37 +1,46 @@
-package com.kursivee.authentication.view.google
+package com.kursivee.authentication.view.authentication
 
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.kursivee.authentication.view.login.LoginFragment
 
-class AuthenticationDelegate(private val token: String, private val onFirebaseAuthComplete: OnCompleteListener<AuthResult>, private val activity: Activity) {
+class AuthenticationDelegate(private val clientId: String) {
 
-    private val firebaseAuthentication: FirebaseAuthentication by lazy {
-        FirebaseAuthentication()
+    companion object {
+        const val RC_SIGN_IN = 1
     }
 
-    private val googleAuthentication: GoogleAuthentication by lazy {
-        GoogleAuthentication(token)
+    private val firebaseAuth: FirebaseAuth by lazy {
+        FirebaseAuth.getInstance()
     }
 
-    var currentUser = firebaseAuthentication.currentUser
-        private set
+    val currentUser = firebaseAuth.currentUser
 
-    fun authenticate(): Intent = googleAuthentication.getSignInIntent(activity)
+    fun authenticate(activity: Activity): Intent =
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(clientId)
+            .requestEmail()
+            .build().run {
+                GoogleSignIn.getClient(activity, this).signInIntent
+            }
 
-    fun authenticate(intent: Intent) {
-        val task = googleAuthentication.getSignedInAccount(intent)
+    fun authenticate(intent: Intent): Task<AuthResult>? {
+        val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
         try {
             task.getResult(ApiException::class.java)?.let { account ->
-                firebaseAuthentication.authenticate(account, onFirebaseAuthComplete)
+               return firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(account.idToken, null))
             }
         } catch (t: Throwable) {
             Log.e(LoginFragment::class.java.simpleName, "Google sign in failed", t)
         }
+        return null
     }
 }
